@@ -1,6 +1,9 @@
 const LocalStrategy = require('passport-local').Strategy;
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const createDomPurify = require('dompurify');
+const { JSDOM } = require('jsdom');
+const DOMPurify = createDomPurify(new JSDOM().window);
 
 // Loads user model
 const User = require('../models/User');
@@ -9,6 +12,8 @@ module.exports = function(passport) {
     passport.use(
         new LocalStrategy({ usernameField: 'email'}, (email, password, done) => {
             // Match user
+            email = DOMPurify.sanitize(email);
+            password = DOMPurify.sanitize(password);
             User.findOne({ email: email })
                 .then(user => {
                     if(!user){
