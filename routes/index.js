@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const { ensureAuth, ensureGuest } = require('../config/auth');
+const Story = require('../models/Ticket');
 
 // Landing page
 router.get('/', ensureGuest, (req, res) => res.render('welcome'));

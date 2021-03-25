@@ -3,9 +3,10 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const createDomPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
-
 const DOMPurify = createDomPurify(new JSDOM().window);
-
+const speakeasy = require('speakeasy');
+const qrcode = require('qrcode');
+const messagebird = require('messagebird')('');
 
 // User model
 const User = require('../models/User');
@@ -19,18 +20,21 @@ router.get('/register', (req, res) => res.render('register'));
 
 // Register Handle
 router.post('/register', (req, res) => {
-    var { name, email, password, password2, userType, otp } = req.body;
+    var { name, email, password, password2, userType, tel } = req.body;
     name = DOMPurify.sanitize(name);
     email = DOMPurify.sanitize(email);
     password = DOMPurify.sanitize(password);
     password2 = DOMPurify.sanitize(password2);
     userType = DOMPurify.sanitize(userType);
-    otp = DOMPurify.sanitize(otp);
+    tel = DOMPurify.sanitize(tel);
 
     let errors = [];
 
+    // 2FA
+    
+
     // Check required fields
-    if(!name || !email || !password || !password2 || !userType || !otp){
+    if(!name || !email || !password || !password2 || !userType || !tel){
         errors.push({ msg: 'Please fill in all fields'})
     }
 
@@ -60,8 +64,8 @@ router.post('/register', (req, res) => {
     }
 
     // Check if password contains at least 1 special character
-    if(password.search() < 0){
-        errors.push({ msg: 'Password should contain at least one number' });
+    if(password.search(/\W/) < 0){
+        errors.push({ msg: 'Password should contain at least one special character' });
     }
 
     if(errors.length > 0) {
@@ -71,7 +75,8 @@ router.post('/register', (req, res) => {
             email,
             password,
             password2,
-            userType
+            userType,
+            tel
         })
     } else {
         // Passed Validation
@@ -86,14 +91,16 @@ router.post('/register', (req, res) => {
                         email,
                         password,
                         password2,
-                        userType
+                        userType,
+                        tel
                     })
                 } else {
                     const newUser = new User({
                         name,
                         email,
                         password,
-                        userType
+                        userType,
+                        tel
                     });
 
                     // Hash Password

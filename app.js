@@ -3,14 +3,21 @@ const index = require('./routes/index')
 const users = require('./routes/users')
 const mongoose = require('mongoose')
 const expressLayouts = require('express-ejs-layouts')
+const exphbs = require('express-handlebars');
 const morgan = require('morgan')
 const dotenv = require('dotenv')
 const flash = require('connect-flash')
 const session = require('express-session')
 const passport = require('passport');
+const mongoSanitize = require('express-mongo-sanitize');
 
 
 const app = express();
+
+// Sanitize mongo scripts by replacing prohibited characters with '_'
+app.use(mongoSanitize({
+    replaceWith: '_'
+}));
 
 // Load config
 dotenv.config();
@@ -31,6 +38,10 @@ if(process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
+// Handlebars
+app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));
+app.set('view gnine', '.hbs');
+
 // EJS
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
@@ -42,7 +53,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(session({
     secret: 'secret',
     receive: true,
+    resave: false,
     saveUninitialized: true,
+    cookie : {
+        maxAge:(5000) // 5 seconds - maxAge works in milliseconds
+} 
 }));
 
 
