@@ -13,10 +13,10 @@ const User = require('../models/User');
 const passport = require('passport');
 
 // Login Page
-router.get('/login', (req, res) => res.render('login'));
+router.get('/login', (req, res) => res.render('login.ejs'));
 
 // Register Page
-router.get('/register', (req, res) => res.render('register'));
+router.get('/register', (req, res) => res.render('register.ejs'));
 
 // Register Handle
 router.post('/register', (req, res) => {
@@ -69,7 +69,7 @@ router.post('/register', (req, res) => {
     }
 
     if(errors.length > 0) {
-        res.render('register', {
+        res.render('register.ejs', {
             errors,
             name,
             email,
@@ -85,7 +85,7 @@ router.post('/register', (req, res) => {
                 if(user) {
                     // User exists
                     errors.push({ msg: 'Email already registered' });
-                    res.render('register', {
+                    res.render('register.ejs', {
                         errors,
                         name,
                         email,
@@ -130,6 +130,7 @@ router.post('/login', (req, res, next) => {
         failureRedirect: '/auth/login',
         failureFlash: true
     })(req, res, next);
+    console.log(User.UserSchema) 
 });
 
 // Logout Handle
@@ -140,3 +141,4 @@ router.get('/logout', (req, res) => {
 })
 
 module.exports = router;
+

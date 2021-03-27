@@ -1,0 +1,53 @@
+{{#ifEquals userType "Admin"}}
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">{{ticket.title}}</h4><h6 class="card-title">{{ticket.priority}} Priority</h6>
+            <br>
+            <div class="row">
+                <div class="col">
+                    <h6 class="card-subtitle mb-2 text-muted">Assigned to: <h6 class="card-subtitle mb-2">{{ticket.assignedTo}}</h6></h6>
+                </div>
+                <div class="col">
+                    <h6 class="card-subtitle mb-2 text-muted">Created by: <h6 class="card-subtitle mb-2">{{ticket.user}}</h6></h6>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col">
+                    <h6 class="card-subtitle mb-2 text-muted">Status:</h6><h6 class="card-subtitle mb-2 text-mute"> {{ticket.status}}</h6>
+                </div>
+                <div class="col">
+                    <h6 class="card-subtitle mb-2 text-muted">Mark as: <a href="#">Open |</a><a href="#"> Resolved |</a><a href="#"> Closed</a></h6>
+                </div>
+            </div>
+            <br>
+            <h6 class="card-subtitle mb-2 text-muted">Description:</h6>
+            <p class="card-text">{{ticket.description}}</p>
+            <a href="#" class="card-link">Add comment</a>
+            <a href="#" class="card-link">View comments</a>
+        </div>
+    </div>
+{{else}}
+    <div class="card">
+    <div class="card-body">
+        <h4 class="card-title">{{ticket.title}}</h4><h6 class="card-title">{{ticket.priority}} Priority</h6>
+        <br>
+        <div class="row">
+            <div class="col">
+                <h6 class="card-subtitle mb-2 text-muted">Assigned to: <h6 class="card-subtitle mb-2">{{ticket.assignedTo}}</h6></h6>
+            </div>
+            <div class="col">
+                <h6 class="card-subtitle mb-2 text-muted">Status:</h6><h6 class="card-subtitle mb-2 text-mute"> {{ticket.status}}</h6>
+            </div>
+        </div>
+        <br>
+        <h6 class="card-subtitle mb-2 text-muted">Mark as: <a href="#"> Resolved</a></h6>
+        <br>
+        <h6 class="card-subtitle mb-2 text-muted">Description:</h6>
+        <p class="card-text">{{ticket.description}}</p>
+        <a href="#" class="card-link">Add comment</a>
+        <a href="#" class="card-link">View comments</a>
+    </div>
+</div>
+
+{{/ifEquals}}

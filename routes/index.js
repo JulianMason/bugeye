@@ -4,20 +4,22 @@ const { ensureAuth, ensureGuest } = require('../config/auth');
 const Ticket = require('../models/Ticket');
 
 // Landing page
-router.get('/', ensureGuest, (req, res) => res.render('welcome'));
+router.get('/', ensureGuest, (req, res) => res.render('welcome.ejs'));
 
 // Dashboard page
 router.get('/dashboard', ensureAuth, async (req, res) => {
     try {
-        const tickets = await Ticket.find({ user: req.user.id })
+        const tickets = await Ticket.find({ user: req.user.id }).lean()
+        res.render('dashboard.hbs', {
+            name: req.user.name,
+            userType: req.user.userType,
+            tickets
+        })
     } catch (err) {
-
+        console.log(err)
+        res.render('error/500.hbs')
     }
 
-    res.render('dashboard', {
-        name: req.user.name,
-        userType: req.user.userType
-    })
 })
 
 module.exports = router;
