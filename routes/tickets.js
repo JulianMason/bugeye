@@ -2,6 +2,9 @@ const express = require('express')
 const router = express.Router();
 const { ensureAuth } = require('../config/auth');
 const Ticket = require('../models/Ticket');
+const createDomPurify = require('dompurify');
+const { JSDOM } = require('jsdom');
+const DOMPurify = createDomPurify(new JSDOM().window);
 
 // Show add page
 router.get('/add', ensureAuth, (req, res) => {
@@ -24,6 +27,7 @@ router.get('/:id', ensureAuth, async (req, res) => {
 // Post ticket
 router.post('/', ensureAuth, async (req, res) => {
     try {
+        req.body.user = DOMPurify.sanitize(req.body.user);
         req.body.user = req.user.id
         await Ticket.create(req.body)
         res.redirect('/dashboard')

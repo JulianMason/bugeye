@@ -130,7 +130,6 @@ router.post('/login', (req, res, next) => {
         failureRedirect: '/auth/login',
         failureFlash: true
     })(req, res, next);
-    console.log(User.UserSchema) 
 });
 
 // Logout Handle
