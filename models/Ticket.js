@@ -1,11 +1,33 @@
 const mongoose = require('mongoose')
+const { nanoid } = require('nanoid')
 
+
+function ticketNum() {
+    var length = 5,
+        charset = "0123456789",
+        retVal = "100";
+    for (var i = 0, n = charset.length; i < length; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+    }
+    return retVal;
+}
 
 const TicketSchema = new mongoose.Schema({
+    _id: {
+        type: String,
+        default: () => nanoid(12)
+    },
+    ticket_num: {
+        type: String,
+        default: ticketNum()
+    },
     title: {
         type: String,
         trim: true
     }, 
+    created_by: {
+        type: String,
+    },
     tType: {
         type: String,
         //required: true,

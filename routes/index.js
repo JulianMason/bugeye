@@ -10,10 +10,12 @@ router.get('/', ensureGuest, (req, res) => res.render('welcome.ejs'));
 router.get('/dashboard', ensureAuth, async (req, res) => {
     try {
         const tickets = await Ticket.find({ user: req.user.id }).lean()
+        const ticketsAll = await Ticket.find({}).lean()
         res.render('dashboard.hbs', {
             name: req.user.name,
             userType: req.user.userType,
-            tickets
+            tickets,
+            ticketsAll
         })
     } catch (err) {
         console.log(err)

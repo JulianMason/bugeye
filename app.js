@@ -5,6 +5,8 @@ const tickets = require('./routes/tickets')
 const mongoose = require('mongoose')
 const expressLayouts = require('express-ejs-layouts')
 const exphbs = require('express-handlebars');
+const Handlebars = require('handlebars')
+const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
 const morgan = require('morgan')
 const dotenv = require('dotenv')
 const flash = require('connect-flash')
@@ -12,6 +14,7 @@ const session = require('express-session')
 const passport = require('passport');
 const mongoSanitize = require('express-mongo-sanitize');
 const path = require('path');
+const bodyParser = require("body-parser")
 
 
 const app = express();
@@ -47,7 +50,9 @@ const { formatDate, ifEquals } = require('./helpers/hbs');
 app.engine('.hbs', exphbs({ helpers: {
     formatDate,
     ifEquals,
-}, defaultLayout: 'main', extname: '.hbs' }));
+    },
+    handlebars: allowInsecurePrototypeAccess(Handlebars),
+    defaultLayout: 'main', extname: '.hbs' }));
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, "views"));
 
@@ -56,7 +61,8 @@ app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
 // BodyParser
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 // Express Session
@@ -66,7 +72,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie : {
-        maxAge:(300000) // 5 minutes - maxAge works in milliseconds (1,000 = 1 second)
+        maxAge:(3000000) // 5 minutes - maxAge works in milliseconds (1,000 = 1 second)
 } 
 }));
 

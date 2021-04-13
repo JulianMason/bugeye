@@ -51,3 +51,42 @@
 </div>
 
 {{/ifEquals}}
+<br>
+<br>
+<br>
+
+<div class="card border-primary mb-3" style="">
+    {{#each comments}}
+  <div class="card-header">Comments</div>
+  <div class="card-body">
+    <h4 class="card-title">USER:</h4>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+  {{/each}}
+  <div class="card-body">
+    <form action="/tickets//post_comment" method="POST">
+  <fieldset>
+    <legend>Add Comment</legend>
+    <div class="form-group">
+      <label for="comment">Your comment</label>
+      <textarea class="form-control" id="comment" name="description" rows="1"></textarea>
+    </div>
+    <div class="form-group">
+        <label hidden for="created_by">Created By</label>
+        <input hidden type="created_by" id="created_by" name="created_by" class="form-control" value="" />
+    </div>
+    <div class="form-group">
+        <label hidden for="ticket_id">Ticket ID</label>
+        <input hidden type="ticket_id" id="ticket_id" name="ticket_id" class="form-control" value=""/>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button type="submit" class="btn btn-primary">Post comment</button>
+            <a href="/dashboard" class="btn">Cancel</a>
+        </div>
+    </div>
+  </fieldset>
+    </form>
+  </div>
+  
+</div>

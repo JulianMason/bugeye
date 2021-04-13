@@ -25,6 +25,10 @@
       <textarea class="form-control" id="description" name="description" rows="3"></textarea>
     </div>
     <div class="form-group">
+      <label hidden for="created_by">Created By</label>
+      <input hidden type="created_by" id="created_by" name="created_by" class="form-control" value="{{user.name}}"/>
+    </div>
+    <div class="form-group">
       <label for="assignTo">Assign to developer</label>
       <select class="form-control" id="assignedTo" name="assignedTo">
         <option value="Julian">Julian</option>
